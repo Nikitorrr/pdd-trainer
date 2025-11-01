@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Билеты ПДД - ЭКЗАМЕН-ПДД.РФ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a202c;
+            min-height: 100vh;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2d3748;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo-icon {
+            background: #e53e3e;
+            border-radius: 8px;
+            padding: 8px;
+            margin-right: 10px;
+        }
+
+        .progress-bar {
+            background: #4a5568;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #e53e3e;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Exam Card */
+        .exam-card {
+            background: #2d3748;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e53e3e;
+        }
+
+        .question-number {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e53e3e;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        /* Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option {
+            background: #4a5568;
+            border: 2px solid #718096;
+            border-radius: 10px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .option:hover {
+            border-color: #e53e3e;
+            background: #5a6578;
+        }
+
+        .option.selected {
+            border-color: #e53e3e;
+            background: #742a2a;
+        }
+
+        .option.correct {
+            border-color: #38a169;
+            background: #2d5c42;
+        }
+
+        .option.incorrect {
+            border-color: #e53e3e;
+            background: #742a2a;
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .nav-btn:disabled {
+            background: #4a5568;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #c53030;
+        }
+
+        .question-counter {
+            color: #a0aec0;
+            font-weight: 600;
+        }
+
+        /* Results */
+        .results {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .results-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #e53e3e;
+        }
+
+        .results-score {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .results-message {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #a0aec0;
+        }
+
+        .back-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #c53030;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                ЭКЗАМЕН-ПДД.РФ - Билеты
+            </div>
+            <div class="question-counter">Вопрос <span id="currentQuestion">1</span> из <span id="totalQuestions">0</span></div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Exam Content -->
+        <div id="examContent">
+            <div class="exam-card">
+                <div class="question-header">
+                    <div class="question-number">Вопрос <span id="questionNumber">1</span></div>
+                </div>
+                
+                <div class="question-text" id="questionText">
+                    Загрузка вопроса...
+                </div>
+
+                <div class="options" id="optionsContainer">
+                    <!-- Options will be loaded here -->
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn" id="prevBtn" onclick="prevQuestion()" disabled>
+                        <i class="fas fa-arrow-left"></i> Назад
+                    </button>
+                    <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">
+                        Далее <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsContent" class="hidden">
+            <div class="exam-card results">
+                <h2 class="results-title">Тест завершен!</h2>
+                <div class="results-score" id="finalScore">0/0</div>
+                <div class="results-message" id="resultsMessage"></div>
+                <button class="back-btn" onclick="goHome()">
+                    <i class="fas fa-home"></i> На главную
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://astcajoqsmklsrfbmxug.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzdGNham9xc21rbHNyZmJteHVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4OTU2NTYsImV4cCI6MjA3NzQ3MTY1Nn0.SKPsvgFMrK0NN7Qwk_nlgHzrVBJlUleXFB-uzFdTGZw';
+
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let ticketId = 1; // Начинаем с первого билета
+
+        // Load questions from Supabase
+        async function loadQuestions() {
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/questions?ticket_id=eq.${ticketId}&select=*`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`
+                        }
+                    }
+                );
+                
+                if (!response.ok) throw new Error('Ошибка загрузки вопросов');
+                
+                currentQuestions = await response.json();
+                userAnswers = new Array(currentQuestions.length).fill(null);
+                
+                updateQuestionCounter();
+                showQuestion(0);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('questionText').textContent = 'Ошибка загрузки вопросов. Проверьте подключение.';
+            }
+        }
+
+        // Show question
+        function showQuestion(index) {
+            if (index < 0 || index >= currentQuestions.length) return;
+            
+            currentQuestionIndex = index;
+            const question = currentQuestions[index];
+            
+            document.getElementById('questionNumber').textContent = index + 1;
+            document.getElementById('questionText').textContent = question.question_text;
+            
+            // Create options
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            const options = [question.option1, question.option2, question.option3];
+            options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[index] === optionIndex + 1) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = `${optionIndex + 1}. ${option}`;
+                optionElement.onclick = () => selectAnswer(optionIndex + 1);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').textContent = 
+                index === currentQuestions.length - 1 ? 'Завершить' : 'Далее';
+                
+            // Update progress
+            updateProgress();
+        }
+
+        // Select answer
+        function selectAnswer(answer) {
+            userAnswers[currentQuestionIndex] = answer;
+            
+            // Update UI
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                option.classList.remove('selected');
+                if (index + 1 === answer) {
+                    option.classList.add('selected');
+                }
+            });
+        }
+
+        // Navigation
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                showQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('Пожалуйста, выберите ответ перед продолжением');
+                return;
+            }
+            
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                showQuestion(currentQuestionIndex + 1);
+            } else {
+                showResults();
+            }
+        }
+
+        // Show results
+        function showResults() {
+            const correctAnswers = currentQuestions.filter((q, index) => 
+                userAnswers[index] === q.correct_answer
+            ).length;
+            
+            const totalQuestions = currentQuestions.length;
+            const score = correctAnswers;
+            
+            document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
+            
+            let message = '';
+            if (score === totalQuestions) {
+                message = 'Отлично! Все ответы правильные! 🎉';
+            } else if (score >= totalQuestions * 0.8) {
+                message = 'Хороший результат! Почти идеально! 👍';
+            } else if (score >= totalQuestions * 0.6) {
+                message = 'Неплохо, но нужно повторить материал 📚';
+            } else {
+                message = 'Нужно серьезно подготовиться к экзамену 💪';
+            }
+            
+            document.getElementById('resultsMessage').textContent = message;
+            document.getElementById('examContent').classList.add('hidden');
+            document.getElementById('resultsContent').classList.remove('hidden');
+        }
+
+        // Update progress
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function updateQuestionCounter() {
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('totalQuestions').textContent = currentQuestions.length;
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize
+        loadQuestions();
+    </script>
+</body>
+</html>
