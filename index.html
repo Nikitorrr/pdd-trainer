@@ -294,7 +294,7 @@
             </div>
             <nav class="nav">
                 <button class="nav-btn active">Главная</button>
-                <button class="nav-btn">Билеты</button>
+                <button class="nav-btn" onclick="location.href='exam.html'">Билеты</button>
                 <button class="nav-btn">Результаты</button>
             </nav>
         </header>
@@ -304,7 +304,7 @@
             <!-- Left Column - Main Menu -->
             <div class="section">
                 <h2 class="section-title">Основное меню</h2>
-                <div class="menu-item">
+                <div class="menu-item" onclick="location.href='exam.html'">
                     <i class="fas fa-bars menu-icon"></i>
                     <div class="menu-text">
                         <div class="menu-title">Экзамен ПДД</div>
@@ -318,7 +318,55 @@
                         <div class="menu-desc">Учиться по формату реального экзамена</div>
                     </div>
                 </div>
-                <!-- ... остальные пункты меню ... -->
+                <div class="menu-item">
+                    <i class="fas fa-comments menu-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Обсуждения</div>
+                        <div class="menu-desc">Общаться с другими учениками</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-book menu-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Читать ПДД</div>
+                        <div class="menu-desc">Изучать полный текст правил дорожного движения</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-road menu-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Знаки</div>
+                        <div class="menu-desc">Изучать дорожные знаки и их значения</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-file-alt menu-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Тест по знакам</div>
+                        <div class="menu-desc">Проверить знания по дорожным знакам</div>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="location.href='exam.html'">
+                    <i class="fas fa-file-alt menu-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Билеты ПДД</div>
+                        <div class="menu-desc">Решать официальные билеты ПДД</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-award menu-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Штрафы</div>
+                        <div class="menu-desc">Узнать о штрафах за нарушения ПДД</div>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-shield-alt menu-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Лента Telegram</div>
+                        <div class="menu-desc">Подписаться на актуальные новости и советы</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Middle Column - Special Features -->
@@ -331,7 +379,63 @@
                         <div class="menu-desc">Пройти 20 вопросов подобранных случайно</div>
                     </div>
                 </div>
-                <!-- ... остальные особенности ... -->
+                <div class="feature-item">
+                    <i class="fas fa-file-alt feature-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Выбрать билет</div>
+                        <div class="menu-desc">Решать вопросы по выбранному билету и категории</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-file-alt feature-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Выбрать тему</div>
+                        <div class="menu-desc">Решать вопросы на выбранную тематику ПДД</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-road feature-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Марафон 800</div>
+                        <div class="menu-desc">Решать все 800 вопросов из 40-ка билетов подряд</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-exclamation-triangle feature-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Самые сложные</div>
+                        <div class="menu-desc">Различные подборки самых сложных вопросов ПДД</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-award feature-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Режим ЭКЗАМЕН</div>
+                        <div class="menu-desc">Имитация реального экзамена. С результатом в конце теста</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-exclamation-triangle feature-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Мои ошибки <span class="badge">0</span></div>
+                        <div class="menu-desc">Вернуться к своим ошибкам. Работа над ошибками</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-star feature-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Избранное <span class="badge">0</span></div>
+                        <div class="menu-desc">Моя подборка вопросов</div>
+                    </div>
+                </div>
+
+                <!-- Test Settings -->
+                <div class="test-settings">
+                    <button class="settings-btn">
+                        <i class="fas fa-cog"></i> Настроить тестирование
+                    </button>
+                    <div>Билеты: ABM</div>
+                </div>
             </div>
 
             <!-- Right Column - Additional -->
@@ -344,7 +448,39 @@
                         <div class="menu-desc">Убрать рекламу с сайта</div>
                     </div>
                 </div>
-                <!-- ... остальные кнопки ... -->
+                <div class="action-btn">
+                    <i class="fas fa-question-circle action-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Вопросы и ответы</div>
+                        <div class="menu-desc">Найти ответы на частые вопросы</div>
+                    </div>
+                </div>
+                <div class="action-btn">
+                    <i class="fas fa-pen-fancy action-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Написать в поддержку</div>
+                        <div class="menu-desc">Связаться с технической поддержкой</div>
+                    </div>
+                </div>
+                <div class="action-btn">
+                    <i class="fas fa-cog action-icon"></i>
+                    <div class="menu-text">
+                        <div class="menu-title">Настроить тестирование</div>
+                        <div class="menu-desc">Настроить параметры тестирования</div>
+                    </div>
+                </div>
+
+                <!-- Footer Links -->
+                <div class="footer">
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">Для автошкол</a>
+                        <a href="#" class="footer-link">Конфиденциальность</a>
+                        <a href="#" class="footer-link">Пользовательское соглашение</a>
+                    </div>
+                    <div class="copyright">
+                        © 2024 ЭКЗАМЕН ПДД
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -361,9 +497,17 @@
         // Заглушки для функционала
         document.querySelectorAll('.menu-item, .feature-item, .action-btn').forEach(item => {
             item.addEventListener('click', function() {
-                const title = this.querySelector('.menu-title').textContent;
-                alert(`Раздел "${title}" будет доступен в следующем обновлении!`);
+                // Если у элемента нет специального обработчика, показываем заглушку
+                if (!this.onclick || !this.getAttribute('onclick')) {
+                    const title = this.querySelector('.menu-title').textContent;
+                    alert(`Раздел "${title}" будет доступен в следующем обновлении!`);
+                }
             });
+        });
+
+        // Специальные обработчики для работающих ссылок
+        document.querySelectorAll('.menu-item[onclick]').forEach(item => {
+            item.style.cursor = 'pointer';
         });
     </script>
 </body>
