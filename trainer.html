@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Тренажёр ПДД</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: #1a202c;
+      color: white;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #2d3748;
+      border-radius: 15px;
+      padding: 25px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #e53e3e;
+    }
+    .question-box {
+      margin-bottom: 25px;
+    }
+    .question-text {
+      font-size: 18px;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    .answer-option {
+      display: block;
+      padding: 12px;
+      margin: 8px 0;
+      background: #4a5568;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .answer-option:hover {
+      background: #718096;
+    }
+    .answer-option input {
+      margin-right: 12px;
+    }
+    .btn {
+      background: #e53e3e;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 15px;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #c53030;
+    }
+    .explanation {
+      margin-top: 15px;
+      padding: 12px;
+      background: #3a4555;
+      border-left: 4px solid #3182ce;
+      border-radius: 0 8px 8px 0;
+    }
+    .progress {
+      text-align: center;
+      font-size: 14px;
+      color: #a0aec0;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚗 ПДД Тренажёр</h1>
+    <div class="progress" id="progress">Загрузка...</div>
+    <div class="question-box" id="question-container">
+      Загрузка вопроса...
+    </div>
+  </div>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ⚠️ ЗАМЕНИ НА СВОИ ДАННЫЕ ИЗ SUPABASE
+    const SUPABASE_URL = 'https://ВАШ_PROJECT_URL.supabase.co';
+    const SUPABASE_ANON_KEY = 'ВАШ_ANON_KEY';
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentQuestionIndex = 0;
+    let questions = [];
+
+    async function loadQuestions() {
+      const { data, error } = await supabase
+        .from('questions')
+        .select('*')
+        .order('id', { ascending: true });
+
+      if (error) {
+        console.error('Ошибка:', error);
+        document.getElementById('question-container').innerHTML = '<p style="color: red;">Ошибка загрузки вопросов. Проверьте подключение к БД.</p>';
+        return;
+      }
+
+      questions = data;
+      showQuestion(currentQuestionIndex);
+    }
+
+    function showQuestion(index) {
+      const progressEl = document.getElementById('progress');
+      const container = document.getElementById('question-container');
+
+      if (index >= questions.length) {
+        container.innerHTML = '<h2 style="text-align:center; color:#38a169;">Тренировка завершена! 🎉</h2><p style="text-align:center;">Вы прошли все вопросы.</p>';
+        progressEl.textContent = `Вопросов пройдено: ${questions.length}/${questions.length}`;
+        return;
+      }
+
+      const q = questions[index];
+      progressEl.textContent = `Вопрос ${index + 1} из ${questions.length}`;
+
+      let imgHtml = '';
+      if (q.image_url) {
+        imgHtml = `<img src="${q.image_url}" alt="Иллюстрация">`;
+      }
+
+      const answers = [q.option1, q.option2, q.option3];
+      const answersHtml = answers.map((ans, i) =>
+        `<label class="answer-option">
+          <input type="radio" name="answer" value="${i}"> ${ans}
+        </label>`
+      ).join('');
+
+      container.innerHTML = `
+        <div class="question-text">${q.question_text}</div>
+        ${imgHtml}
+        <div class="answers">${answersHtml}</div>
+        <button class="btn" id="check-btn">Проверить</button>
+      `;
+
+      document.getElementById('check-btn').onclick = () => checkAnswer(q.correct_answer - 1);
+    }
+
+    function checkAnswer(correctIndex) {
+      const selected = document.querySelector('input[name="answer"]:checked');
+      if (!selected) {
+        alert('Выберите ответ!');
+        return;
+      }
+
+      const userAnswer = parseInt(selected.value);
+      const labels = document.querySelectorAll('.answer-option');
+      labels.forEach((label, i) => {
+        if (i === correctIndex) {
+          label.style.borderColor = '#38a169';
+          label.style.background = '#2f3b2f';
+          label.style.color = '#c6f6d5';
+        }
+        if (i === user
