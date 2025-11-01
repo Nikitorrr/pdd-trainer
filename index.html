@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПДД Тренажер</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <header class="header">
+                <div class="logo">🚗 ПДД ТРЕНАЖЕР</div>
+                <nav class="nav">
+                    <button class="nav-btn active">Главная</button>
+                    <button class="nav-btn">Билеты</button>
+                    <button class="nav-btn">Результаты</button>
+                </nav>
+            </header>
+
+            <main class="main">
+                <div class="welcome-section">
+                    <h1>Добро пожаловать в ПДД Тренажер!</h1>
+                    <p>Подготовься к экзамену в ГИБДД с помощью нашего тренажера</p>
+                    <button class="start-btn" onclick="startExam()">Начать обучение</button>
+                </div>
+
+                <div class="stats-section">
+                    <div class="stat-card">
+                        <h3>Билеты</h3>
+                        <p>40 билетов</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Вопросы</h3>
+                        <p>800 вопросов</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Режимы</h3>
+                        <p>5 режимов обучения</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
