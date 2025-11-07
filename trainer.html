@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Тренажёр ПДД</title>
+  <title>ПДД Тренажёр</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
     * {
@@ -16,6 +16,7 @@
       background: #1a202c;
       color: white;
       padding: 20px;
+      min-height: 100vh;
     }
     .container {
       max-width: 800px;
@@ -23,40 +24,53 @@
       background: #2d3748;
       border-radius: 15px;
       padding: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     h1 {
       text-align: center;
       margin-bottom: 20px;
       color: #e53e3e;
+      font-size: 24px;
     }
-    .question-box {
-      margin-bottom: 25px;
+    .progress {
+      text-align: center;
+      font-size: 14px;
+      color: #a0aec0;
+      margin-bottom: 20px;
+      font-weight: 600;
     }
     .question-text {
       font-size: 18px;
-      margin-bottom: 15px;
       line-height: 1.6;
+      margin-bottom: 20px;
     }
     img {
       max-width: 100%;
       height: auto;
-      border-radius: 8px;
+      border-radius: 10px;
       margin: 15px 0;
+      border: 1px solid #4a5568;
+    }
+    .answers {
+      margin-bottom: 20px;
     }
     .answer-option {
       display: block;
-      padding: 12px;
+      padding: 14px;
       margin: 8px 0;
       background: #4a5568;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      border: 1px solid #4a5568;
     }
     .answer-option:hover {
-      background: #718096;
+      background: #5a6575;
+      border-color: #e53e3e;
     }
     .answer-option input {
       margin-right: 12px;
+      transform: scale(1.2);
     }
     .btn {
       background: #e53e3e;
@@ -66,24 +80,43 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      margin-top: 15px;
+      font-size: 16px;
       transition: background 0.3s;
+      width: 100%;
+      margin-top: 10px;
     }
     .btn:hover {
       background: #c53030;
     }
     .explanation {
-      margin-top: 15px;
-      padding: 12px;
+      margin-top: 20px;
+      padding: 14px;
       background: #3a4555;
       border-left: 4px solid #3182ce;
       border-radius: 0 8px 8px 0;
+      font-size: 15px;
+      line-height: 1.5;
     }
-    .progress {
+    .explanation strong {
+      color: #90cdf4;
+    }
+    .error {
+      color: #f56565;
       text-align: center;
-      font-size: 14px;
-      color: #a0aec0;
-      margin-bottom: 15px;
+      padding: 20px;
+    }
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+        margin: 10px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      .question-text {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -91,15 +124,13 @@
   <div class="container">
     <h1>🚗 ПДД Тренажёр</h1>
     <div class="progress" id="progress">Загрузка...</div>
-    <div class="question-box" id="question-container">
-      Загрузка вопроса...
-    </div>
+    <div id="question-container">Загрузка вопроса...</div>
   </div>
 
-  <!-- Supabase CDN -->
+  <!-- Supabase Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ⚠️ ЗАМЕНИ НА СВОИ ДАННЫЕ ИЗ SUPABASE
+    // 🔑 Подключение к твоей Supabase
     const SUPABASE_URL = 'https://astcajoqsmklsrfbmxug.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzdGNham9xc21rbHNyZmJteHVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4OTU2NTYsImV4cCI6MjA3NzQ3MTY1Nn0.SKPsvgFMrK0NN7Qwk_nlgHzrVBJlUleXFB-uzFdTGZw';
 
@@ -115,12 +146,21 @@
         .order('id', { ascending: true });
 
       if (error) {
-        console.error('Ошибка:', error);
-        document.getElementById('question-container').innerHTML = '<p style="color: red;">Ошибка загрузки вопросов. Проверьте подключение к БД.</p>';
+        console.error('Supabase error:', error);
+        document.getElementById('question-container').innerHTML = 
+          `<div class="error">❌ Не удалось загрузить вопросы.<br>Проверьте настройки Supabase.</div>`;
+        document.getElementById('progress').textContent = 'Ошибка';
         return;
       }
 
       questions = data;
+      if (questions.length === 0) {
+        document.getElementById('question-container').innerHTML = 
+          `<div class="error">📭 В базе данных нет вопросов.<br>Добавьте хотя бы один вопрос в таблицу <code>questions</code>.</div>`;
+        document.getElementById('progress').textContent = 'База пуста';
+        return;
+      }
+
       showQuestion(currentQuestionIndex);
     }
 
@@ -174,4 +214,35 @@
           label.style.background = '#2f3b2f';
           label.style.color = '#c6f6d5';
         }
-        if (i === user
+        if (i === userAnswer && i !== correctIndex) {
+          label.style.borderColor = '#e53e3e';
+          label.style.background = '#4c2a2a';
+          label.style.color = '#fed7d7';
+        }
+      });
+
+      // Объяснение
+      const explanationDiv = document.createElement('div');
+      explanationDiv.className = 'explanation';
+      explanationDiv.innerHTML = `<strong>Объяснение:</strong> ${questions[currentQuestionIndex].explanation}`;
+      document.getElementById('question-container').appendChild(explanationDiv);
+
+      // Кнопка "Далее"
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'btn';
+      nextBtn.textContent = 'Следующий вопрос';
+      nextBtn.onclick = () => {
+        currentQuestionIndex++;
+        showQuestion(currentQuestionIndex);
+      };
+      document.getElementById('question-container').appendChild(nextBtn);
+
+      // Скрываем кнопку "Проверить"
+      document.getElementById('check-btn').style.display = 'none';
+    }
+
+    // Запуск
+    loadQuestions();
+  </script>
+</body>
+</html>
